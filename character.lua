@@ -10,6 +10,7 @@ character.all = {}
 local speed = 192
 local weaponX = 0
 local weaponY = 0
+local attack = false
 
 --char = love.graphics.newImage("textures/character.png")
 
@@ -81,7 +82,9 @@ function character_mt:draw( )
 
 	love.graphics.setColor(255, 255, 255, 255)
 	love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-	love.graphics.circle("line", weaponX, weaponY, 32, 6)
+	if attack then 
+		love.graphics.circle("line", weaponX, weaponY, 32, 6)
+	end
 
 end
 
@@ -119,16 +122,28 @@ if self.id == 1 then
 	
 	if love.keyboard.isDown("up") and self.y >= 0 then
     	self.y = self.y - speed * dt 
+    	weaponY = self.y - self.h/2
+    	weaponX = self.x + self.w/2
   
   	elseif love.keyboard.isDown("down") and self.y <= 600 - self.h then
     	self.y = self.y + speed * dt 
+    	weaponY = self.y + self.h * 3/2
+    	weaponX = self.x + self.w/2
 
 	elseif love.keyboard.isDown("left") and self.x >= 0 then
 	    self.x = self.x - speed * dt
+	    weaponX = self.x - self.w/2
+	    weaponY = self.y + self.h/2
 
 	elseif love.keyboard.isDown("right") and self.x <= 800 - self.w then
-      self.x = self.x + speed * dt 
+    	self.x = self.x + speed * dt
+    	weaponX = self.x + self.w * 3/2
+    	weaponY = self.y + self.h/2
       
+	end
+
+	if love.keyboard.isDown(" ")
+		attack = true
 	end
 end
 
@@ -137,13 +152,13 @@ if self.id == 2 then
 	if love.keyboard.isDown("z") and self.y >= 0 then
     	self.y = self.y - speed * dt 
   
-  	elseif love.keyboard.isDown("s") and self.y <= window.height - self.h then
+  	elseif love.keyboard.isDown("s") and self.y <= 600 - self.h then
     	self.y = self.y + speed * dt 
 
 	elseif love.keyboard.isDown("q") and self.x >= 0 then
 	    self.x = self.x - speed * dt
 
-	elseif love.keyboard.isDown("ds") and self.x <= window.width - self.w then
+	elseif love.keyboard.isDown("d") and self.x <= 800 - self.w then
       self.x = self.x + speed * dt 
       
 	end
